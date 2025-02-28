@@ -30,7 +30,7 @@ Create a `.env` file in the `backend` directory and add the following:
 ```env
 PORT=5000
 FRONTEND_URL=http://localhost:3000
-DATABASE_HOST=postgres
+DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USER=postgres
 DATABASE_PASSWORD=admin
@@ -41,7 +41,7 @@ DATABASE_NAME=product_catalog
 Create a `.env` file in the `root` directory for docker composefile:
 ```env
 PORT=5000
-DATABASE_HOST=postgres
+DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USER=postgres
 DATABASE_PASSWORD=admin
