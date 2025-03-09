@@ -1,9 +1,8 @@
-import { Controller, Get, Post, Body, Delete, Param,Query,HttpCode, UseGuards, HttpStatus , UsePipes, ValidationPipe} from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete, Param, Query, HttpCode, UseGuards, HttpStatus, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './product.entity';
 import { CreateProductDto } from './product.dto';
 import { AuthGuard } from '../auth.guard';
-
 
 @Controller('products')
 export class ProductController {
@@ -15,7 +14,7 @@ export class ProductController {
   }
 
   @Post()
-  @HttpCode(HttpStatus.CREATED) // 201 Created
+  @HttpCode(HttpStatus.CREATED)
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async createProduct(@Body() productData: CreateProductDto) {
     return this.productService.create(productData);
@@ -23,8 +22,8 @@ export class ProductController {
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  @HttpCode(HttpStatus.OK) 
-  async deleteProduct(@Param('id') id: string) {
+  @HttpCode(HttpStatus.OK)
+  async deleteProduct(@Param('id') id: number) {
     return this.productService.delete(id);
   }
 
@@ -35,6 +34,6 @@ export class ProductController {
     @Query('maxPrice') maxPrice?: number,
     @Query('sort') sort?: string
   ) {
-    return this.productService.filter(name, minPrice, maxPrice,sort);
+    return this.productService.filter(name, minPrice, maxPrice, sort);
   }
 }

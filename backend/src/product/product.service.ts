@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException,BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Product } from './product.entity';
@@ -10,23 +10,13 @@ export class ProductService {
     private productRepository: Repository<Product>,
   ) {}
 
-  // async findAll(): Promise<Product[]> {
-  //   return this.productRepository.find();
-  // }
-
   async findAll(): Promise<Product[]> {
-    return this.productRepository.find({
-      order: { createdAt: 'DESC' }, 
-    });
+    return this.productRepository.find({ order: { createdAt: 'DESC' } });
   }
 
   async create(productData: Partial<Product>): Promise<{ message: string; statusCode: number; data?: Product }> {
     if (!productData.name || !productData.price) {
-      throw new BadRequestException({
-        message: 'Name and price are required',
-        error: 'Bad Request',
-        statusCode: 400,
-      });
+      throw new BadRequestException('Name and price are required');
     }
 
     const product = this.productRepository.create(productData);
@@ -34,28 +24,20 @@ export class ProductService {
 
     return {
       message: 'Product created successfully',
-      statusCode: 201, 
+      statusCode: 201,
       data: savedProduct,
     };
   }
 
-  async delete(id: string): Promise<{ message: string; statusCode: number }> {
+  async delete(id: number): Promise<{ message: string; statusCode: number }> {
     const result = await this.productRepository.delete(id);
 
     if (result.affected === 0) {
-      throw new NotFoundException({
-        message: 'Product not found',
-        error: 'Not Found',
-        statusCode: 404,
-      });
+      throw new NotFoundException('Product not found');
     }
 
-    return {
-      message: 'Product deleted successfully',
-      statusCode: 200,
-    };
+    return { message: 'Product deleted successfully', statusCode: 200 };
   }
-
 
   async filter(
     name?: string,
@@ -64,47 +46,23 @@ export class ProductService {
     sort?: string
   ) {
     const query = this.productRepository.createQueryBuilder('product');
-  
+
     if (name) {
       query.andWhere('product.name ILIKE :name', { name: `%${name}%` });
     }
-  
+
     if (minPrice !== undefined) {
       query.andWhere('product.price >= :minPrice', { minPrice });
     }
-  
+
     if (maxPrice !== undefined) {
       query.andWhere('product.price <= :maxPrice', { maxPrice });
     }
-  
-    // Ensure sort is always a valid value
+
     const sortOrder = sort?.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
-  
-    console.log(`Sorting by price: ${sort}`); // Debugging output
-  
+
     query.orderBy('product.price', sortOrder);
-  
+
     return query.getMany();
   }
-  
-
-  // async filter(name?: string, minPrice?: number, maxPrice?: number, sort?: string) {
-  //   const query = this.productRepository.createQueryBuilder('product');
-  //   if (name) {
-  //     query.andWhere('product.name ILIKE :name', { name: `%${name}%` });
-  //   }
-  //   if (minPrice !== undefined) {
-  //     query.andWhere('product.price >= :minPrice', { minPrice });
-  //   }
-  //   if (maxPrice !== undefined) {
-  //     query.andWhere('product.price <= :maxPrice', { maxPrice });
-  //   }
-
-  //   console.log(sort)
-  //   if (sort && (sort.toLowerCase() === 'asc' || sort.toLowerCase() === 'desc')) {
-  //     query.orderBy('product.price', sort.toUpperCase() as 'ASC' | 'DESC');
-  //   }
-  //   return query.getMany();
-  // }
-
 }

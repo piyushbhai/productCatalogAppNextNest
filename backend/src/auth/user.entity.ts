@@ -1,13 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column,OneToMany } from 'typeorm';
+import { CartItem } from '../cart/cart-item.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column({ unique: true, nullable: false })
-  username: string;
+  @Column() // Ensure this is not nullable
+  name: string;
 
-  @Column({ nullable: false })
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
   password: string;
+
+  @OneToMany(() => CartItem, (cartItem) => cartItem.user, { cascade: true })
+  cart: CartItem[];
 }
