@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   // ✅ Login Method (100% Fixed)
-  async login(email: string, password: string): Promise<{ token: string }> {
+  async login(email: string, password: string): Promise<{ token: string,id:number }> {
     // ✅ Check if the user exists
     const user = await this.userRepo.findOne({ where: { email } });
     if (!user) {
@@ -48,6 +48,6 @@ export class AuthService {
       { expiresIn: '1h' }   // ✅ Token Expiry (1 Hour)
     );
 
-    return { token };
+    return { token,id:user.id };
   }
 }
