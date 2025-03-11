@@ -14,14 +14,32 @@ export class ProductService {
     return this.productRepository.find({ order: { createdAt: 'DESC' } });
   }
 
+  // async create(productData: Partial<Product>): Promise<{ message: string; statusCode: number; data?: Product }> {
+  //   if (!productData.name || !productData.price) {
+  //     throw new BadRequestException('Name and price are required');
+  //   }
+
+  //   const product = this.productRepository.create(productData);
+  //   const savedProduct = await this.productRepository.save(product);
+
+  //   return {
+  //     message: 'Product created successfully',
+  //     statusCode: 201,
+  //     data: savedProduct,
+  //   };
+  // }
   async create(productData: Partial<Product>): Promise<{ message: string; statusCode: number; data?: Product }> {
     if (!productData.name || !productData.price) {
       throw new BadRequestException('Name and price are required');
     }
-
-    const product = this.productRepository.create(productData);
+  
+    const product = this.productRepository.create({
+      ...productData,
+      images: productData.images || [],
+    });
+  
     const savedProduct = await this.productRepository.save(product);
-
+  
     return {
       message: 'Product created successfully',
       statusCode: 201,

@@ -4,11 +4,11 @@ import StarIcon from '@mui/icons-material/Star';
 import { IProduct } from '../../../redux/products/product.types';
 import AddToCartBtn from '../../cart/components/AddToCartBtn';
 
-const ProductItem: FC<IProduct> = ({ id, name, price, rating, thumbnail }) => (
+const ProductItem: FC<IProduct> = ({ id, name, price, rating, images }) => (
   <div className='product-item'>
     <div className='product-pic'>
       <Link to={`/products/${String(id)}`}>
-        <img src={thumbnail} alt={name} />
+        <img src={images[0]} alt={name} />
       </Link>
     </div>
     <div className='product-title'>

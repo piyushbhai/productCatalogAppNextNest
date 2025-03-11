@@ -54,12 +54,12 @@ export class OrderService {
         order: savedOrder,
         product: product,
         quantity: item.quantity,
-        price: product.price * item.quantity,
+        price: Number(product.price) * item.quantity,
       });
 
       // ✅ Add it to the orderItems array
       orderItems.push(orderItem);
-      totalPrice += product.price * item.quantity;
+      totalPrice += Number(product.price) * item.quantity;
     }
 
     // ✅ Save all order items
