@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Post, Get, Body, UsePipes, ValidationPipe,Req, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserDto } from './user.dto';
 import { AuthDto } from './auth.dto';
@@ -18,4 +18,14 @@ export class AuthController {
   async login(@Body() body: AuthDto) {
     return this.authService.login(body.email, body.password);
   }
+
+  @Get('users/:id')
+  // @UseGuards(AuthGuard)  
+  async getUserOrders(@Param('id') id: string) {
+    const user = await this.authService.getUserByID(parseInt(id));
+    return {
+      user: user
+    };
+  }
+
 }

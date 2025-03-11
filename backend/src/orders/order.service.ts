@@ -15,8 +15,7 @@ export class OrderService {
   ) {}
 
   async createOrder(userId: number, cartItems: any[]): Promise<{ message: string; statusCode: number; data?: Order }> {
-    // ✅ Check if cartItems is actually an array
-    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+   if (!Array.isArray(cartItems) || cartItems.length === 0) {
       throw new BadRequestException({
         message: 'Cart is empty or invalid',
         error: 'Bad Request',
@@ -24,7 +23,6 @@ export class OrderService {
       });
     }
 
-    // ✅ Check if user exists
     const user = await this.userRepo.findOne({ where: { id: Number(userId) } });
     if (!user) {
       throw new NotFoundException({
@@ -34,14 +32,12 @@ export class OrderService {
       });
     }
 
-    // ✅ Create a new order
     const order = this.orderRepo.create({ user, status: 'pending', totalPrice: 0 });
     const savedOrder = await this.orderRepo.save(order);
 
     let totalPrice = 0;
     const orderItems: OrderItem[] = [];
 
-    // ✅ Loop through the cartItems and add products
     for (const item of cartItems) {
       const product = await this.productRepo.findOne({ where: { id: item.productId } });
 
@@ -49,7 +45,6 @@ export class OrderService {
         throw new NotFoundException(`Product with ID ${item.productId} not found`);
       }
 
-      // ✅ Create OrderItem
       const orderItem = this.orderItemRepo.create({
         order: savedOrder,
         product: product,
@@ -57,19 +52,15 @@ export class OrderService {
         price: Number(product.price) * item.quantity,
       });
 
-      // ✅ Add it to the orderItems array
       orderItems.push(orderItem);
       totalPrice += Number(product.price) * item.quantity;
     }
 
-    // ✅ Save all order items
     await this.orderItemRepo.save(orderItems);
 
-    // ✅ Update order total price
     savedOrder.totalPrice = totalPrice;
     await this.orderRepo.save(savedOrder);
 
-    // ✅ Return response
     return {
       message: 'Order placed successfully',
       statusCode: 201,
@@ -77,7 +68,6 @@ export class OrderService {
     };
   }
 
-  // ✅ Get user orders
   async getUserOrders(userId: number): Promise<Order[]> {
     return this.orderRepo.find({
       where: { user: { id: userId } },

@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  private readonly SECRET_KEY = '123123'; // ✅ Use the same key as in AuthService
+  private readonly SECRET_KEY = '123123'; 
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
@@ -20,13 +20,10 @@ export class AuthGuard implements CanActivate {
     const token = authHeader.split(' ')[1];
 
     try {
-      // ✅ Verify the token using the same key
       const decoded = jwt.verify(token, this.SECRET_KEY);
 
-      // ✅ Attach the user to the request object
       request.user = decoded;
 
-      // ✅ Token is now valid, allow request
       return true;
     } catch (error) {
       throw new UnauthorizedException({

@@ -7,7 +7,7 @@ import CartICon from '../../pages/cart/components/CartIcon';
 
 const Header = () => {
   const { isAuthenticated } = useCheckAuthenticated();
-
+  console.log(isAuthenticated)
   return (
     <header>
       <Link to='/' className='logo'>

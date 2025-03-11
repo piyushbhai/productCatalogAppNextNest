@@ -11,7 +11,7 @@ const Login = () => {
   const [inputError, setInputError] = useState('');
   const [inputSuccess, setInputSuccess] = useState('');
   const [login] = useLoginMutation();
-  const { setAuthToken, setAuthUserId } = useActions();
+  const { setAuthToken, setAuthUserId,setUser } = useActions();
   const navigate = useNavigate();
 
   const formSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -23,11 +23,15 @@ const Login = () => {
     await login(entries)
       .unwrap()
       .then(data => {
-        console.log(data)
+        // console.log(data)
 
         const { token, id } = data;
         setAuthToken({ token });
         setAuthUserId({ userId: id });
+        setAuthUserId({ userId: id });
+        setUser({data});
+        // localStorage.setItem('userId',id);
+        // localStorage.setItem('token',token);
 
         setInputError('');
         setInputSuccess('Login successful');

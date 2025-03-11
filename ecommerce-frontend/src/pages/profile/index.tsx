@@ -6,6 +6,7 @@ import './profile.css';
 
 const ProfilePage = () => {
   const user = useAuthUserSelector();
+  // console.log(user.user)
   const { logout } = useActions();
   const navigate = useNavigate();
 
@@ -19,31 +20,23 @@ const ProfilePage = () => {
   };
 
   const {
-    image,
-    email,
-    firstName,
-    lastName,
-    age,
-    birthDate,
-    phone,
-    address: { city },
-    university,
-  } = user;
+    name,email
+  } = user?.user[0];
 
   return (
     <div className='profile'>
       <div className='profile-header'>
-        <div className='profile-pic'>
+        {/* <div className='profile-pic'>
           <img src={image} alt='' />
-        </div>
+        </div> */}
         <div className='profile-info'>
-          <h2>{`${firstName} ${lastName}`}</h2>
+          <h2>{`${name}`}</h2>
           <p>{email}</p>
         </div>
       </div>
       <div className='profile-details'>
         <ul>
-          <li>
+          {/* <li>
             <strong>Age:</strong> {age}
           </li>
           <li>
@@ -57,7 +50,7 @@ const ProfilePage = () => {
           </li>
           <li>
             <strong>University:</strong> {university}
-          </li>
+          </li> */}
         </ul>
       </div>
       <button

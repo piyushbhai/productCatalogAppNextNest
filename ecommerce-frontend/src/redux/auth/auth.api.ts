@@ -21,7 +21,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     getUser: build.query<IUserResponse, string>({
       query: id => ({
-        url: `/users/${id}`,
+        url: `/auth/users/${id}`,
         method: 'GET',
       }),
     }),

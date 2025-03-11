@@ -30,6 +30,7 @@ export const authSlice = createSlice({
     },
     setUser: (state: AuthState, action: PayloadAction<IUserResponse>) => {
       state.user = action.payload;
+      localStorage.setItem('userData', JSON.stringify(action.payload.data));
     },
     logout: (state: AuthState) => {
       state.token = '';

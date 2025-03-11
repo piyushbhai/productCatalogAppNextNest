@@ -12,6 +12,7 @@ export interface ILoginResponse {
   gender: string;
   image: string;
   token: string;
+  data:string;
 }
 
 export interface IToken {
@@ -58,6 +59,7 @@ export interface IUserResponse {
   ein: string;
   ssn: string;
   userAgent: string;
+  data: string;
 }
 
 interface Hair {
